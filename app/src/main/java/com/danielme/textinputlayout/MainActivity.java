@@ -2,6 +2,7 @@ package com.danielme.textinputlayout;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -33,20 +34,35 @@ public class MainActivity extends AppCompatActivity {
   }
 
   public void validate(View view) {
+    String mailError = null;
     if (TextUtils.isEmpty(editTextEmail.getText())) {
-      textInputEmail.setError(getString(R.string.mandatory));
-    } else {
-      textInputEmail.setErrorEnabled(false);
+      mailError = getString(R.string.mandatory);
     }
+    toggleTextInputLayoutError(textInputEmail, mailError);
+
+    String passError = null;
     if (TextUtils.isEmpty(editTextPassword.getText())) {
-      textInputPassword.setError(getString(R.string.mandatory));
-    } else {
-      textInputPassword.setErrorEnabled(false);
+      passError = getString(R.string.mandatory);
     }
+    toggleTextInputLayoutError(textInputPassword, passError);
 
     clearFocus();
   }
 
+  /**
+   * Display/hides TextInputLayout error.
+   *
+   * @param msg the message, or null to hide
+   */
+  private static void toggleTextInputLayoutError(@NonNull TextInputLayout textInputLayout,
+                                                String msg) {
+    textInputLayout.setError(msg);
+    if (msg == null) {
+      textInputLayout.setErrorEnabled(false);
+    } else {
+      textInputLayout.setErrorEnabled(true);
+    }
+  }
 
   private void clearFocus() {
     View view = this.getCurrentFocus();
